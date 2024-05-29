@@ -1,6 +1,5 @@
 #ifndef _VAULTIFY_H
 #define _VAULTIFY_H
-#include "openssl/cryptoerr_legacy.h"
 #define _VLT_H_INSIDE
 #include "encryption.h"
 #include "entry.h"
@@ -22,7 +21,7 @@ typedef struct
 } encrypted_entry;
 
 encrypted_entry vlt_encrypt_entry (vlt_entry *entry, const char *key);
-vlt_entry vlt_decrypt_entry (encrypted_entry* entry, const unsigned char *key);
+vlt_entry vlt_decrypt_entry (encrypted_entry *entry, const unsigned char *key);
 bool vlt_login (vlt_user *user, const char *password);
 #undef _VLT_H_INSIDE
 #endif

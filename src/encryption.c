@@ -87,8 +87,8 @@ vlt_encrypt (const char *plaintext, const unsigned char *key,
 
 int
 vlt_decrypt (unsigned char *ciphertext, int ciphertext_len,
-         const unsigned char *key, const unsigned char *iv,
-         unsigned char **plaintext)
+             const unsigned char *key, const unsigned char *iv,
+             unsigned char **plaintext)
 {
   EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new ();
   if (!ctx)

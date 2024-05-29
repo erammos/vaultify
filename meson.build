@@ -8,7 +8,7 @@ project(
 gtkdeps = dependency('gtk+-3.0')
 openslldeps = dependency('openssl')
 
-unity_subproject = subproject('unity')
+unity_subproject = subproject('Unity')
 unity_dependency = unity_subproject.get_variable('unity_dep')
 unity_gen_runner = unity_subproject.get_variable('gen_test_runner')
 

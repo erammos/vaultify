@@ -8,14 +8,13 @@ vlt_encrypt_entry (vlt_entry *entry, const char *password)
 {
   encrypted_entry encrypted = { 0 };
 
-  generate_salt (encrypted.salt, SALT_SIZE);
-  unsigned char key[KEY_SIZE];
-  derive_key_iv (password, encrypted.salt, key, encrypted.iv);
+  generate_salt (encrypted.iv, SALT_SIZE);
 
   auto entry_str = vlt_stringfy_entry (entry);
   auto ciphertext_len = 0;
   unsigned char *ciphertext = nullptr;
-  vlt_encrypt (entry_str, key, encrypted.iv, &ciphertext, &ciphertext_len);
+  vlt_encrypt (entry_str, password, encrypted.iv, &ciphertext,
+               &ciphertext_len);
   free (entry_str);
 
   encrypted.ciphertext = ciphertext;
@@ -26,7 +25,6 @@ vlt_encrypt_entry (vlt_entry *entry, const char *password)
 vlt_entry
 vlt_decrypt_entry (encrypted_entry *encrypted, const unsigned char *password)
 {
-
   vlt_entry entry = { 0 };
   unsigned char *plaintext = nullptr;
   vlt_decrypt (encrypted->ciphertext, encrypted->ciphertext_len, password,

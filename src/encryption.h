@@ -5,7 +5,7 @@
 #endif
 #define SALT_SIZE 16
 #define KEY_SIZE 32
-#define IV_SIZE 16
+#define IV_SIZE 128
 #define ITERATIONS 10000
 int generate_salt (unsigned char *salt, int size);
 int derive_key_iv (const char *password, unsigned char *salt,
@@ -14,6 +14,6 @@ int vlt_encrypt (const char *plaintext, const unsigned char *key,
                  const unsigned char *iv, unsigned char **ciphertext,
                  int *ciphertext_len);
 int vlt_decrypt (unsigned char *ciphertext, int ciphertext_len,
-             const unsigned char *key, const unsigned char *iv,
-             unsigned char **plaintext);
+                 const unsigned char *key, const unsigned char *iv,
+                 unsigned char **plaintext);
 #endif
