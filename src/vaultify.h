@@ -1,0 +1,28 @@
+#ifndef _VAULTIFY_H
+#define _VAULTIFY_H
+#include "openssl/cryptoerr_legacy.h"
+#define _VLT_H_INSIDE
+#include "encryption.h"
+#include "entry.h"
+#define MAX_PASS 256
+
+typedef struct
+{
+  bool is_logged_in;
+  const char master_password[MAX_PASS];
+
+} vlt_user;
+
+typedef struct
+{
+  unsigned char *ciphertext;
+  int ciphertext_len;
+  unsigned char salt[SALT_SIZE];
+  unsigned char iv[IV_SIZE];
+} encrypted_entry;
+
+encrypted_entry vlt_encrypt_entry (vlt_entry *entry, const char *key);
+vlt_entry vlt_decrypt_entry (encrypted_entry* entry, const unsigned char *key);
+bool vlt_login (vlt_user *user, const char *password);
+#undef _VLT_H_INSIDE
+#endif
