@@ -16,9 +16,15 @@ src = files(
   'src' / 'entry.c',
   'src' / 'vaultify.c',
   'src' / 'encryption.c',
+  'src' / 'entries.c',
 )
 
-tests = files('test' / 'test_encryption.c')
+test1 = files(
+  'test' / 'test_encryption.c',
+  )
+  test2 = files(
+  'test' / 'test_entries.c',
+  )
 inc = include_directories('src')
 
 executable(
@@ -32,9 +38,17 @@ executable(
 
 test1 = executable(
   'test1',
-  [src, tests, unity_gen_runner.process( 'test' / 'test_encryption.c')],
+  [src, test1, unity_gen_runner.process( 'test' / 'test_encryption.c')],
   dependencies: [openslldeps, unity_dependency],
   c_args: '-DVLT_COMPILATION',
   include_directories: inc,
 )
+test2 = executable(
+  'test2',
+  [src, test2, unity_gen_runner.process( 'test' / 'test_entries.c')],
+  dependencies: [openslldeps,unity_dependency],
+  c_args: '-DVLT_COMPILATION',
+  include_directories: inc,
+)
 test('test1',test1)
+test('test2',test2)
