@@ -2,7 +2,10 @@
 #include "encryption.h"
 #include "entry.h"
 #include <stdlib.h>
+#include <string.h>
 
+static char *urls[MAX_URL] = { 0 };
+static size_t url_len;
 encrypted_entry
 vlt_encrypt_entry (vlt_entry *entry, const char *password)
 {
@@ -31,4 +34,35 @@ vlt_decrypt_entry (encrypted_entry *encrypted, const unsigned char *password)
                encrypted->iv, &plaintext);
   vlt_replace_from_str (&entry, (char *)plaintext);
   return entry;
+}
+size_t
+vlt_get_list_by_url (char **list[])
+{
+  vlt_entry **entries;
+  size_t length = get_entries (&entries);
+  for (size_t i = 0; i < length; i++)
+    {
+      urls[i] = entries[i]->url;
+    }
+  *list = urls;
+
+  return length;
+}
+static bool cmp_url(void * url1, void * url2)
+{
+  return strcmp(url1,url2) == 0;
+}
+vlt_entry * vlt_get_entry_by_url (char url[])
+{
+
+  vlt_entry **entries;
+  size_t length = get_entries (&entries);
+  for (size_t i = 0; i < length; i++)
+    {
+      if ( strcmp(entries[i]->url,url) == 0 )
+      {
+        return entries[i];
+      }
+    }
+    return nullptr;
 }

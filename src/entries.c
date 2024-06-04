@@ -26,7 +26,7 @@ vlt_clear_entries ()
   num_entries = 0;
 }
 static bool
-cmp_equal (vlt_entry *entry, vlt_entry *other)
+cmp_equal (void *entry, void *other)
 {
   return entry == other;
 }
@@ -59,8 +59,9 @@ vlt_find_entry_by (vlt_entry *entry, cmp_entry compare)
   return nullptr;
 }
 
-vlt_entry **
-get_entries ()
+size_t get_entries (vlt_entry ** out[])
 {
-  return entries;
+  
+  *out = entries;
+  return num_entries;
 }

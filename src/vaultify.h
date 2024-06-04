@@ -3,6 +3,8 @@
 #define _VLT_H_INSIDE
 #include "encryption.h"
 #include "entry.h"
+#include "entries.h"
+#include <stdlib.h>
 #define MAX_PASS 256
 
 typedef struct
@@ -23,5 +25,7 @@ typedef struct
 encrypted_entry vlt_encrypt_entry (vlt_entry *entry, const char *key);
 vlt_entry vlt_decrypt_entry (encrypted_entry *entry, const unsigned char *key);
 bool vlt_login (vlt_user *user, const char *password);
+size_t vlt_get_list_by_url (char **list[]);
+vlt_entry * vlt_get_entry_by_url (char url[]);
 #undef _VLT_H_INSIDE
 #endif
