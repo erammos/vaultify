@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static char *urls[MAX_URL] = { 0 };
+static const char *urls[MAX_URL] = { 0 };
 static size_t url_len;
 encrypted_entry
 vlt_encrypt_entry (vlt_entry *entry, const char *password)
@@ -36,7 +36,7 @@ vlt_decrypt_entry (encrypted_entry *encrypted, const unsigned char *password)
   return entry;
 }
 size_t
-vlt_get_list_by_url (char **list[])
+vlt_get_list_by_url (const char **list[])
 {
   vlt_entry **entries;
   size_t length = get_entries (&entries);
