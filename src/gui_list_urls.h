@@ -37,7 +37,7 @@ InitGuiListUrls (OnClickBtn view_cb, OnClickBtn edit_cb, OnClickBtn add_cb,
 {
   GuiListUrlsState state = { 0 };
 
-  state.anchor = (Vector2){ (float)SCREEN_WIDTH / 2 - 192 / 2,
+  state.anchor = (Vector2){ (float)SCREEN_WIDTH / 2 - 192.0 / 2,
                             (float)SCREEN_HEIGHT / 2 - 136.0 / 2 };
 
   state.scroll_index = 0;

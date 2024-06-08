@@ -4,7 +4,6 @@
 #include "encryption.h"
 #include "entry.h"
 #include "entries.h"
-#include <stdlib.h>
 #define MAX_PASS 256
 
 typedef struct

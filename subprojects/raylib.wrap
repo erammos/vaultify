@@ -1,0 +1,5 @@
+[wrap-git]
+directory=raylib
+url=https://github.com/raysan5/raylib.git
+revision=5.0
+depth=1
