@@ -1,6 +1,0 @@
-[submodule "subprojects/Unity"]
-	path = subprojects/Unity
-	url = https://github.com/ThrowTheSwitch/Unity.git
-[submodule "subprojects/raygui"]
-	path = subprojects/raygui
-	url = https://github.com/raysan5/raygui

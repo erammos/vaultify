@@ -1,13 +1,21 @@
 project(
   'vaultify',
-  'c',
+  ['c','cpp'],
   version: '0.1',
   default_options: ['warning_level=3', 'c_std=gnu2x'],
 )
-
+cmake = import('cmake')
 openslldeps = dependency('openssl')
 sqlite = dependency('sqlite3')
-raylib = dependency('raylib')
+
+raylib_opts = cmake.subproject_options()
+raylib_opts.set_install(false)
+raylib_opts.add_cmake_defines({
+'BUILD_EXAMPLES':'OFF',
+'BUILD_SHARED_LIBS':'ON'
+})
+raylib_proj = cmake.subproject('raylib',options:raylib_opts)
+raylib = raylib_proj.dependency('raylib')
 unity_subproject = subproject('Unity')
 unity_dependency = unity_subproject.get_variable('unity_dep')
 unity_gen_runner = unity_subproject.get_variable('gen_test_runner')

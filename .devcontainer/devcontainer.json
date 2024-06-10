@@ -1,0 +1,18 @@
+{
+    "build": {
+        // Path is relative to the devcontainer.json file.
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-azuretools.vscode-docker",
+                "mesonbuild.mesonbuild",
+                "ms-vscode.cpptools",
+                "ms-vscode.cpptools-extension-pack",
+                "llvm-vs-code-extensions.vscode-clangd"
+            ]
+        }
+    },
+    "postCreateCommand": "bash init.sh"
+}

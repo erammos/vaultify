@@ -2,7 +2,6 @@
 #include "entry.h"
 #include "stdlib.h"
 #include "string.h"
-#include "subprojects/unity/src/unity.h"
 #include "unity.h"
 #include "vaultify.h"
 #include <unistd.h>
