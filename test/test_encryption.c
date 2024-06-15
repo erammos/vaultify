@@ -94,3 +94,13 @@ test_vlt_encryption ()
   TEST_ASSERT_EQUAL_CHAR_ARRAY ("password", decrypted.password,
                                 strlen ("password"));
 }
+
+void
+test_vlt_save ()
+{
+ 
+
+  vlt_entry_ctr (e, "home", "user", "password");
+  auto encrypted = vlt_encrypt_entry (e, "mypassword");
+  
+}

@@ -59,9 +59,10 @@ vlt_find_entry_by (vlt_entry *entry, cmp_entry compare)
   return nullptr;
 }
 
-size_t get_entries (vlt_entry ** out[])
+size_t
+get_entries (vlt_entry **out[])
 {
-  
+
   *out = entries;
   return num_entries;
 }

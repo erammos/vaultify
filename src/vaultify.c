@@ -66,3 +66,11 @@ vlt_entry * vlt_get_entry_by_url (char url[])
     }
     return nullptr;
 }
+
+size_t vlt_get_entries_size()
+{
+  vlt_entry **entries;
+  size_t length = get_entries (&entries);
+  return length;
+}
+

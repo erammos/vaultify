@@ -26,5 +26,6 @@ vlt_entry vlt_decrypt_entry (encrypted_entry *entry, const unsigned char *key);
 bool vlt_login (vlt_user *user, const char *password);
 size_t vlt_get_list_by_url (const char **list[]);
 vlt_entry * vlt_get_entry_by_url (char url[]);
+size_t vlt_get_entries_size();
 #undef _VLT_H_INSIDE
 #endif

@@ -18,10 +18,12 @@ typedef struct
   char user_name_text[MAX_USERNAME];
   char hidden_password[MAX_PASS];
   char password[MAX_PASS];
+  OnClose exitPressed;
 
 } GuiPasswordDialogState;
 
-GuiPasswordDialogState InitGuiPasswordDialog (void);
+GuiPasswordDialogState
+InitGuiPasswordDialog (OnClose on_close);
 void GuiPasswordDialog (GuiPasswordDialogState *state);
 
 #endif // GUI_PASSWORDDIALOG_H
@@ -29,7 +31,7 @@ void GuiPasswordDialog (GuiPasswordDialogState *state);
 #include "raygui.h"
 
 GuiPasswordDialogState
-InitGuiPasswordDialog (void)
+InitGuiPasswordDialog (OnClose on_close)
 {
   GuiPasswordDialogState state = { 0 };
 
@@ -37,6 +39,7 @@ InitGuiPasswordDialog (void)
                             (float)SCREEN_HEIGHT / 2 - 144.0 / 2 };
 
   state.dialog_active = false;
+  state.exitPressed = on_close;
   strcpy (state.user_name_text, "");
   strcpy (state.hidden_password, "");
 
@@ -82,5 +85,7 @@ DrawGuiPasswordDialog (GuiPasswordDialogState *state)
                                   24, 24 },
                      "cpy"))
         SetClipboardText (state->password);
+      if(!state->dialog_active)
+	      state->exitPressed();
     }
 }

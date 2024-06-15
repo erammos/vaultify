@@ -26,9 +26,10 @@ struct GuiEditUrlState
   bool info_edit;
   char info_text[128];
   OnClickSaveBtn saveBtnPressed;
+  OnClose exitPressed;
 };
 
-GuiEditUrlState InitGuiEditUrl (OnClickSaveBtn save_cb);
+GuiEditUrlState InitGuiEditUrl (OnClickSaveBtn save_cb, OnClose exit);
 void DrawGuiEditUrl (GuiEditUrlState *state);
 
 #endif // GUI_EDIT_URL_H
@@ -36,7 +37,7 @@ void DrawGuiEditUrl (GuiEditUrlState *state);
 #include "raygui.h"
 
 GuiEditUrlState
-InitGuiEditUrl (OnClickSaveBtn save_cb)
+InitGuiEditUrl (OnClickSaveBtn save_cb, OnClose exit)
 {
   GuiEditUrlState state = { 0 };
 
@@ -49,6 +50,7 @@ InitGuiEditUrl (OnClickSaveBtn save_cb)
   state.password_edit = false;
   state.info_edit = false;
   state.saveBtnPressed = save_cb;
+  state.exitPressed = exit;
   Clear (&state);
 
   return state;
@@ -124,5 +126,9 @@ DrawGuiEditUrl (GuiEditUrlState *state)
       GuiLabel (
           (Rectangle){ state->anchor.x + 16, state->anchor.y + 152, 88, 24 },
           "Info");
+
+      if(!state->dialog_active)
+	      state->exitPressed();
+		   
     }
 }

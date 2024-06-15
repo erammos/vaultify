@@ -11,8 +11,11 @@ sqlite = dependency('sqlite3')
 raylib_opts = cmake.subproject_options()
 raylib_opts.set_install(false)
 raylib_opts.add_cmake_defines({
+'CUSTOMIZE_BUILD':'ON',
 'BUILD_EXAMPLES':'OFF',
-'BUILD_SHARED_LIBS':'ON'
+'BUILD_SHARED_LIBS':'ON',
+'USE_EXTERNAL_GLFW':'OFF',
+'OPENGL_VERSION':'ES 2.0'
 })
 raylib_proj = cmake.subproject('raylib',options:raylib_opts)
 raylib = raylib_proj.dependency('raylib')
@@ -41,7 +44,7 @@ executable(
   dependencies: [sqlite,raylib, openslldeps],
   c_args: '-DVLT_COMPILATION',
   include_directories: inc,
-  install: true,
+  install: false,
 )
 
 test1 = executable(

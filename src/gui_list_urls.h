@@ -14,6 +14,7 @@ struct GuiListUrlsState
 {
   Vector2 anchor;
 
+  bool is_visible;
   int scroll_index;
   int active_index;
   OnClickBtn view_cb;
@@ -46,6 +47,7 @@ InitGuiListUrls (OnClickBtn view_cb, OnClickBtn edit_cb, OnClickBtn add_cb,
   state.view_cb = view_cb;
   state.del_cb = del_cb;
   state.edit_cb = edit_cb;
+  state.is_visible = true;
 
   return state;
 }
@@ -60,25 +62,29 @@ UpdateList (GuiListUrlsState *state, const char *text[], int length)
 void
 DrawGuiListUrls (GuiListUrlsState *state)
 {
-  int focus;
-  GuiListViewEx (
-      (Rectangle){ state->anchor.x + 0, state->anchor.y + 24, 192, 136 },
-      state->items, state->itemLength, &state->scroll_index,
-      &state->active_index, &focus);
-  if (GuiButton (
-          (Rectangle){ state->anchor.x + 0, state->anchor.y + 0, 48, 24 },
-          "VIEW"))
-    state->view_cb (state, state->active_index);
-  if (GuiButton (
-          (Rectangle){ state->anchor.x + 48, state->anchor.y + 0, 48, 24 },
-          "EDIT"))
-    state->edit_cb (state, state->active_index);
-  if (GuiButton (
-          (Rectangle){ state->anchor.x + 96, state->anchor.y + 0, 48, 24 },
-          "ADD"))
-    state->add_cb (state, state->active_index);
-  if (GuiButton (
-          (Rectangle){ state->anchor.x + 144, state->anchor.y + 0, 48, 24 },
-          "DEL"))
-    state->del_cb (state, state->active_index);
+  if (state->is_visible)
+    {
+
+      int focus;
+      GuiListViewEx (
+          (Rectangle){ state->anchor.x + 0, state->anchor.y + 24, 192, 136 },
+          state->items, state->itemLength, &state->scroll_index,
+          &state->active_index, &focus);
+      if (GuiButton (
+              (Rectangle){ state->anchor.x + 0, state->anchor.y + 0, 48, 24 },
+              "VIEW"))
+        state->view_cb (state, state->active_index);
+      if (GuiButton (
+              (Rectangle){ state->anchor.x + 48, state->anchor.y + 0, 48, 24 },
+              "EDIT"))
+        state->edit_cb (state, state->active_index);
+      if (GuiButton (
+              (Rectangle){ state->anchor.x + 96, state->anchor.y + 0, 48, 24 },
+              "ADD"))
+        state->add_cb (state, state->active_index);
+      if (GuiButton ((Rectangle){ state->anchor.x + 144, state->anchor.y + 0,
+                                  48, 24 },
+                     "DEL"))
+        state->del_cb (state, state->active_index);
+    }
 }

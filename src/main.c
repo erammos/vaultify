@@ -12,31 +12,34 @@
 
 static GuiPasswordDialogState password_dialog;
 static GuiEditUrlState edit_url_dialog;
+static GuiListUrlsState list_view;
 
 static void
 OnClickViewBtn (GuiListUrlsState *state, int index)
 {
-  if (index < 0)
+  if (index < 0 || vlt_get_entries_size()  <= 0 || index >= vlt_get_entries_size())
     return;
   auto entry = vlt_get_entry_by_url (state->items[index]);
   UpdateGuiPasswordDialog (&password_dialog, entry->username, entry->password);
   ShowGuiPasswordDialog (&password_dialog);
+  list_view.is_visible = false;
 }
 static void
 OnClickEditBtn (GuiListUrlsState *state, int index)
 {
-  if (index < 0)
+  if (index < 0 || vlt_get_entries_size()  <= 0 || index >= vlt_get_entries_size())
     return;
 }
 static void
 OnClickAddBtn (GuiListUrlsState *state, int index)
 {
   ShowEditUrl (&edit_url_dialog);
+  list_view.is_visible = false;
 }
 static void
 OnClickDelBtn (GuiListUrlsState *state, int index)
 {
-  if (index < 0)
+  if (index < 0 || vlt_get_entries_size()  <= 0 || index >= vlt_get_entries_size())
     return;
   auto entry = vlt_get_entry_by_url (state->items[index]);
   vlt_remove_entry (entry);
@@ -51,6 +54,11 @@ saveOnAddBtn (GuiEditUrlState *state)
   vlt_add_entry (entry);
 }
 
+static void
+OnCloseDialog ()
+{
+  list_view.is_visible = true;
+}
 int
 main ()
 {
@@ -66,11 +74,10 @@ main ()
   vlt_add_entry (entry3);
 
   InitWindow (SCREEN_WIDTH, SCREEN_HEIGHT, "Demo");
-
-  auto list_view = InitGuiListUrls (&OnClickViewBtn, &OnClickEditBtn,
-                                    &OnClickAddBtn, &OnClickDelBtn);
-  password_dialog = InitGuiPasswordDialog ();
-  edit_url_dialog = InitGuiEditUrl (&saveOnAddBtn);
+  list_view = InitGuiListUrls (&OnClickViewBtn, &OnClickEditBtn,
+                               &OnClickAddBtn, &OnClickDelBtn);
+  password_dialog = InitGuiPasswordDialog (&OnCloseDialog);
+  edit_url_dialog = InitGuiEditUrl (&saveOnAddBtn, &OnCloseDialog);
 
   SetTargetFPS (60);
 
