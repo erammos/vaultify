@@ -1,6 +1,7 @@
 #include "vaultify.h"
 #include "encryption.h"
 #include "entry.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -48,29 +49,86 @@ vlt_get_list_by_url (const char **list[])
 
   return length;
 }
-static bool cmp_url(void * url1, void * url2)
+static bool
+cmp_url (void *url1, void *url2)
 {
-  return strcmp(url1,url2) == 0;
+  return strcmp (url1, url2) == 0;
 }
-vlt_entry * vlt_get_entry_by_url (char url[])
+vlt_entry *
+vlt_get_entry_by_url (char url[])
 {
 
   vlt_entry **entries;
   size_t length = get_entries (&entries);
   for (size_t i = 0; i < length; i++)
     {
-      if ( strcmp(entries[i]->url,url) == 0 )
-      {
-        return entries[i];
-      }
+      if (strcmp (entries[i]->url, url) == 0)
+        {
+          return entries[i];
+        }
     }
-    return nullptr;
+  return nullptr;
 }
 
-size_t vlt_get_entries_size()
+size_t
+vlt_get_entries_size ()
 {
   vlt_entry **entries;
   size_t length = get_entries (&entries);
   return length;
 }
 
+int
+vlt_save_entries (const char *filename, const char *key)
+{
+
+  vlt_entry **e;
+  size_t len = get_entries (&e);
+
+  auto fp = fopen (filename, "wb");
+  fwrite (&len, sizeof (size_t), 1, fp);
+  for (size_t i = 0; i < len; ++i)
+    {
+      auto encrypted = vlt_encrypt_entry (e[i], key);
+      fwrite (&encrypted.ciphertext_len, sizeof (int), 1, fp);
+      fwrite (encrypted.ciphertext, sizeof (unsigned char),
+              encrypted.ciphertext_len, fp);
+      fwrite (encrypted.iv, sizeof (unsigned char), IV_SIZE, fp);
+      fwrite (encrypted.salt, sizeof (unsigned char), SALT_SIZE, fp);
+    };
+  fclose (fp);
+
+  return 0;
+}
+
+int vlt_load_entries (const char *filename, const char *key)
+{
+  encrypted_entry encrypted;
+  vlt_clear_entries ();
+  size_t len = 0;
+
+  auto fp = fopen (filename, "rb");
+  fread (&len, sizeof (size_t), 1, fp);
+
+  for (size_t i = 0; i < len; i++)
+    {
+      fread (&encrypted.ciphertext_len, sizeof (int), 1, fp);
+
+      encrypted.ciphertext
+          = malloc (sizeof (unsigned char) * encrypted.ciphertext_len);
+
+      fread (encrypted.ciphertext, sizeof (unsigned char),
+             encrypted.ciphertext_len, fp);
+      fread (encrypted.iv, sizeof (unsigned char), IV_SIZE, fp);
+      fread (encrypted.salt, sizeof (unsigned char), SALT_SIZE, fp);
+
+      auto entry = vlt_decrypt_entry (&encrypted, key);
+      free (encrypted.ciphertext);
+      auto ptr = malloc (sizeof (entry));
+      memcpy (ptr, &entry, sizeof (entry));
+      vlt_add_entry (ptr);
+    }
+  fclose (fp);
+
+  return len;
+}

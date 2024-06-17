@@ -2,6 +2,7 @@
 #include "string.h"
 #include "unity.h"
 #include "vaultify.h"
+#include <stdio.h>
 
 /* sometimes you may want to get at local data in a module.
  * for example: If you plan to pass by reference, this could be useful
@@ -95,12 +96,3 @@ test_vlt_encryption ()
                                 strlen ("password"));
 }
 
-void
-test_vlt_save ()
-{
- 
-
-  vlt_entry_ctr (e, "home", "user", "password");
-  auto encrypted = vlt_encrypt_entry (e, "mypassword");
-  
-}

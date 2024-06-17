@@ -27,5 +27,7 @@ bool vlt_login (vlt_user *user, const char *password);
 size_t vlt_get_list_by_url (const char **list[]);
 vlt_entry * vlt_get_entry_by_url (char url[]);
 size_t vlt_get_entries_size();
+int vlt_load_entries (const char *filename, const char *key);
+int vlt_save_entries (const char *filename, const char *key);
 #undef _VLT_H_INSIDE
 #endif
