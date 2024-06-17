@@ -101,13 +101,16 @@ vlt_save_entries (const char *filename, const char *key)
   return 0;
 }
 
-int vlt_load_entries (const char *filename, const char *key)
+int
+vlt_load_entries (const char *filename, const char *key)
 {
+  auto fp = fopen (filename, "rb");
+  if (fp == nullptr)
+    return 0;
   encrypted_entry encrypted;
   vlt_clear_entries ();
   size_t len = 0;
 
-  auto fp = fopen (filename, "rb");
   fread (&len, sizeof (size_t), 1, fp);
 
   for (size_t i = 0; i < len; i++)

@@ -153,6 +153,7 @@ test_vlt_save ()
   fclose (fp);
 
   auto decrypted = vlt_decrypt_entry (&encrypted, "mypassword");
+  free (encrypted.ciphertext);
 
   TEST_ASSERT_EQUAL_CHAR_ARRAY ("home", decrypted.url, strlen ("home"));
   TEST_ASSERT_EQUAL_CHAR_ARRAY ("user", decrypted.username, strlen ("user"));
@@ -165,15 +166,39 @@ test_vlt_save_all ()
 
   vlt_clear_entries ();
   auto e1 = vlt_entry_new ();
-  vlt_entry_ctr (e1, "url1", "234", "test");
+  vlt_entry_ctr (e1, "url1", "user1", "password1");
   auto e2 = vlt_entry_new ();
-  vlt_entry_ctr (e2, "url2", "234", "test");
+  vlt_entry_ctr (e2, "url2", "user2", "password2");
   auto e3 = vlt_entry_new ();
-  vlt_entry_ctr (e3, "url3", "234", "test");
+  vlt_entry_ctr (e3, "url3", "user3", "password3");
 
   vlt_add_entry (e1);
   vlt_add_entry (e2);
   vlt_add_entry (e3);
-  
 
+  vlt_save_entries ("test2.data", "mypassword");
+
+  vlt_clear_entries ();
+  e1 = vlt_entry_new ();
+  vlt_entry_ctr (e1, "url4", "xaxa", "password1");
+  e2 = vlt_entry_new ();
+  vlt_entry_ctr (e2, "url5", "xaxaxa", "password2");
+  e3 = vlt_entry_new ();
+  vlt_entry_ctr (e3, "url6", "xaxaxa", "password3");
+
+  vlt_add_entry (e1);
+  vlt_add_entry (e2);
+  vlt_add_entry (e3);
+  vlt_load_entries ("test2.data", "mypassword");
+  vlt_entry **array;
+  int i = 1;
+  get_entries (&array);
+  LOOP (e, array)
+  {
+
+    char test[10] = { 'u', 'r', 'l', [4] = '\0' };
+    test[3] = i + '0';
+    TEST_ASSERT_EQUAL_CHAR_ARRAY (e->url, test, strlen (test));
+    i++;
+  }
 }

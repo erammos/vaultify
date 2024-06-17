@@ -17,7 +17,8 @@ static GuiListUrlsState list_view;
 static void
 OnClickViewBtn (GuiListUrlsState *state, int index)
 {
-  if (index < 0 || vlt_get_entries_size()  <= 0 || index >= vlt_get_entries_size())
+  if (index < 0 || vlt_get_entries_size () <= 0
+      || index >= vlt_get_entries_size ())
     return;
   auto entry = vlt_get_entry_by_url (state->items[index]);
   UpdateGuiPasswordDialog (&password_dialog, entry->username, entry->password);
@@ -27,7 +28,8 @@ OnClickViewBtn (GuiListUrlsState *state, int index)
 static void
 OnClickEditBtn (GuiListUrlsState *state, int index)
 {
-  if (index < 0 || vlt_get_entries_size()  <= 0 || index >= vlt_get_entries_size())
+  if (index < 0 || vlt_get_entries_size () <= 0
+      || index >= vlt_get_entries_size ())
     return;
 }
 static void
@@ -39,7 +41,8 @@ OnClickAddBtn (GuiListUrlsState *state, int index)
 static void
 OnClickDelBtn (GuiListUrlsState *state, int index)
 {
-  if (index < 0 || vlt_get_entries_size()  <= 0 || index >= vlt_get_entries_size())
+  if (index < 0 || vlt_get_entries_size () <= 0
+      || index >= vlt_get_entries_size ())
     return;
   auto entry = vlt_get_entry_by_url (state->items[index]);
   vlt_remove_entry (entry);
@@ -52,6 +55,7 @@ saveOnAddBtn (GuiEditUrlState *state)
   vlt_entry_ctr (entry, state->url_text, state->username_text,
                  state->password_text);
   vlt_add_entry (entry);
+  vlt_save_entries ("saved.data", "mypassword");
 }
 
 static void
@@ -63,16 +67,7 @@ int
 main ()
 {
 
-  auto entry1 = vlt_entry_new ();
-  auto entry2 = vlt_entry_new ();
-  auto entry3 = vlt_entry_new ();
-  vlt_entry_ctr (entry1, "www.google.com", "gonzales", "mypassword1");
-  vlt_entry_ctr (entry2, "www.microsoft.com", "anna", "home123");
-  vlt_entry_ctr (entry3, "www.exmaple.com", "kostas", "password1234");
-  vlt_add_entry (entry1);
-  vlt_add_entry (entry2);
-  vlt_add_entry (entry3);
-
+  vlt_load_entries ("saved.data", "mypassword");
   InitWindow (SCREEN_WIDTH, SCREEN_HEIGHT, "Demo");
   list_view = InitGuiListUrls (&OnClickViewBtn, &OnClickEditBtn,
                                &OnClickAddBtn, &OnClickDelBtn);
